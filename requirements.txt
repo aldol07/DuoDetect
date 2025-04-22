@@ -1,0 +1,11 @@
+pandas
+numpy
+matplotlib
+scikit-learn
+seaborn
+distance
+streamlit
+fuzzywuzzy
+bs4
+rapidfuzz
+flask
