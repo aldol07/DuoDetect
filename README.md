@@ -1,7 +1,7 @@
 # DuoDetect 🧠💬  
 A lightweight machine learning pipeline to detect duplicate questions using Bag-of-Words and other preprocessing techniques.
 
-![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
+![Python](https://img.shields.io/badge/python-3.12-blue.svg)
 ![uv](https://img.shields.io/badge/package%20manager-uv-green)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
