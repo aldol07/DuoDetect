@@ -5,10 +5,10 @@ import pickle
 import numpy as np
 import difflib
 
-# Load the CountVectorizer model
+
 cv = pickle.load(open("notebooks/cv.pkl", "rb"))
 
-# Define a list of common English stopwords as a fallback since stopwords.pkl is missing
+
 STOP_WORDS = {
     'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 'and', 'any', 'are', 'as', 'at',
     'be', 'because', 'been', 'before', 'being', 'below', 'between', 'both', 'but', 'by',
@@ -42,8 +42,7 @@ def test_total_words(q1,q2):
 def test_fetch_token_features(q1, q2):
     SAFE_DIV = 0.0001
 
-    # Using the predefined STOP_WORDS instead of loading from a file
-    # STOP_WORDS = pickle.load(open('stopwords.pkl','rb'))
+    
 
     token_features = [0.0] * 8
 
@@ -62,13 +61,13 @@ def test_fetch_token_features(q1, q2):
     q1_stops = set([word for word in q1_tokens if word in STOP_WORDS])
     q2_stops = set([word for word in q2_tokens if word in STOP_WORDS])
 
-    # Get the common non-stopwords from Question pair
+   
     common_word_count = len(q1_words.intersection(q2_words))
 
-    # Get the common stopwords from Question pair
+    
     common_stop_count = len(q1_stops.intersection(q2_stops))
 
-    # Get the common Tokens from Question pair
+    
     common_token_count = len(set(q1_tokens).intersection(set(q2_tokens)))
 
     token_features[0] = common_word_count / (min(len(q1_words), len(q2_words)) + SAFE_DIV)
@@ -78,10 +77,10 @@ def test_fetch_token_features(q1, q2):
     token_features[4] = common_token_count / (min(len(q1_tokens), len(q2_tokens)) + SAFE_DIV)
     token_features[5] = common_token_count / (max(len(q1_tokens), len(q2_tokens)) + SAFE_DIV)
 
-    # Last word of both question is same or not
+    
     token_features[6] = int(q1_tokens[-1] == q2_tokens[-1]) if q1_tokens and q2_tokens else 0
 
-    # First word of both question is same or not
+    
     token_features[7] = int(q1_tokens[0] == q2_tokens[0]) if q1_tokens and q2_tokens else 0
 
     return token_features
@@ -90,21 +89,20 @@ def test_fetch_token_features(q1, q2):
 def test_fetch_length_features(q1, q2):
     length_features = [0.0] * 3
 
-    # Converting the Sentence into Tokens:
+    
     q1_tokens = q1.split()
     q2_tokens = q2.split()
 
     if len(q1_tokens) == 0 or len(q2_tokens) == 0:
         return length_features
 
-    # Absolute length features
+    
     length_features[0] = abs(len(q1_tokens) - len(q2_tokens))
 
-    # Average Token Length of both Questions
+
     length_features[1] = (len(q1_tokens) + len(q2_tokens)) / 2
 
-    # Find longest common substring
-    # Replacing distance.lcsubstrings with difflib implementation
+
     matcher = difflib.SequenceMatcher(None, q1, q2)
     match = matcher.find_longest_match(0, len(q1), 0, len(q2))
     longest_substring_length = match.size
@@ -135,17 +133,16 @@ def test_fetch_fuzzy_features(q1, q2):
 def preprocess(q):
     q = str(q).lower().strip()
 
-    # Replace certain special characters with their string equivalents
+
     q = q.replace('%', ' percent')
     q = q.replace('$', ' dollar ')
     q = q.replace('₹', ' rupee ')
     q = q.replace('€', ' euro ')
     q = q.replace('@', ' at ')
 
-    # The pattern '[math]' appears around 900 times in the whole dataset.
+    
     q = q.replace('[math]', '')
 
-    # Replacing some numbers with string equivalents (not perfect, can be done better to account for more cases)
     q = q.replace(',000,000,000 ', 'b ')
     q = q.replace(',000,000 ', 'm ')
     q = q.replace(',000 ', 'k ')
@@ -153,9 +150,7 @@ def preprocess(q):
     q = re.sub(r'([0-9]+)000000', r'\1m', q)
     q = re.sub(r'([0-9]+)000', r'\1k', q)
 
-    # Decontracting words
-    # https://en.wikipedia.org/wiki/Wikipedia%3aList_of_English_contractions
-    # https://stackoverflow.com/a/19794953
+
     contractions = {
         "ain't": "am not",
         "aren't": "are not",
