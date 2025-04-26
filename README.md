@@ -40,4 +40,6 @@ Cross-validation strategies (cv.pkl)
 
 Jupyter-based experimentation
 
+Live at: duodetectbyaldol.streamlit.app/
+
 
